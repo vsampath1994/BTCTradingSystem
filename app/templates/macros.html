@@ -1,0 +1,9 @@
+{% macro status_pill(status) -%}
+    {% if status == "pending" %}
+        <span class="label label-warning">Pending</span>
+    {% elif status == "cancelled" %}
+        <span class="label label-danger">Cancelled</span>
+    {% else %}
+        <span class="label label-success">Completed</span>
+    {% endif %}
+{%- endmacro %}

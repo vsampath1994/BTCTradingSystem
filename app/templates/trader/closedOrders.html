@@ -1,0 +1,58 @@
+<!-- app/templates/trader/closedOrders.html -->
+
+{% import "bootstrap/utils.html" as utils %}
+
+{% import 'macros.html' as macros %}
+{% extends "base.html" %}
+{% block title %}Closed orders{% endblock %}
+{% block body %}
+<div class="container">
+<div class="content-section">
+  <div class="outer">
+    <div class="middle">
+      <div class="inner">
+        <br/>
+        {{ utils.flashed_messages() }}
+        <br/>
+        <h1 style="text-align:center;">Closed orders</h1>
+        {% if closedOrders != None %}
+          <hr class="intro-divider">
+          <div class="row" style="height: 360px; overflow: auto">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th width="12%"> Order ID </th>
+                  <th width="12%"> Client ID </th>
+                  <th width="20%"> BTC amount </th>
+                  <th width="20%"> Exchange rate </th>
+				  <th width="10%"> Type </th>
+                  <th width="10%"> Status </th>
+                </tr>
+              </thead>
+              <tbody>
+              {% for closedOrder in closedOrders %}
+                <tr>
+                  <td> {{ closedOrder.xid }} </td>
+                  <td> {{ closedOrder.clientId }} </td>
+                  <td> {{ closedOrder.btc_amount }} </td>
+                  <td> {{ closedOrder.xchange }} </td>
+				  <td> {{ "Buy" if closedOrder.isBuy else "Sell" }} </td>
+                  <td> {{ macros.status_pill(closedOrder.status) }} </td>
+                </tr>
+              {% endfor %}
+              </tbody>
+            </table>
+          </div>
+          <div style="text-align: center">
+        {% else %}
+          <div style="text-align: center">
+            <h3>No closed orders</h3>
+            <hr class="intro-divider">
+        {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+{% endblock %}

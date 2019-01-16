@@ -1,0 +1,119 @@
+<!-- app/templates/trader/clientSearch.html -->
+
+{% import "bootstrap/utils.html" as utils %}
+{% import 'macros.html' as macros %}
+{% extends "base.html" %}
+{% block title %}Client Information{% endblock %}
+{% block body %}
+
+<div class="container">
+<div class="content-section">
+      <div class="row">
+		<div class="row">
+			<table class="table">
+			  <tbody>
+				{% for client in client %}
+				<tr>
+				  <td> Client ID </td>
+				  <td> {{ client.id }} </td>
+				</tr>
+				<tr>
+				  <td> First name </td>
+				  <td> {{ client.first_name }} </td>
+				</tr>
+				<tr>
+				  <td> Last name </td>
+				  <td> {{ client.last_name }} </td>
+				</tr>
+				<tr>
+				  <td> Phone number </td>
+				  <td> {{ client.phone_number }} </td>
+				</tr>
+				<tr>
+				  <td> Address </td>
+				  <td> {{ client.street + ", " + client.city + ", " + client.state + ", " + client.zip_code}} </td>
+				</tr>
+				<tr>
+				  <td> BTC balance </td>
+				  <td> {{ client.btc_balance }} </td>
+				</tr>
+				<tr>
+				  <td> Fiat balance </td>
+				  <td> {{ client.fiat_balance }} </td>
+				</tr>
+				<tr>
+				  <td> Tier </td>
+				  <td> {{ "Gold" if client.gold_status else "Silver"}} </td>
+				</tr>
+				{% endfor %}
+			  </tbody>
+			</table>
+		</div>
+      </div>
+      <div class="row">
+                <ul class="nav nav-tabs">
+                        <li class="active"><a data-toggle="tab" href="#Orders">Orders</a></li>
+                        <li><a data-toggle="tab" href="#Deposits">Deposits</a></li>
+                </ul>
+
+                <div class="tab-content">
+                        <div id="Orders" class="tab-pane fade in active">
+                                <div class="row">
+                                        <table class="table">
+                                        <thead class="thead-light">
+                                        <tr>
+                                                <th scope="col">Id</th>
+                                                <th scope="col">Time</th>
+                                                <th scope="col">Order/Status</th>
+                                                <th scope="col">BTC Amount</th>
+                                                <th scope="col">Exchange Rate</th>
+                                        </tr>
+                                        </thead>
+
+                                        <tbody>
+                                                {% for order in orders %}
+                                                <tr>
+                                                        <td>{{ order.xid }}</td>
+                                                        <td>{{ order.timestamp }}</td>
+                                                        <td>{{ "Buy" if order.isBuy else "Sell" }} <br/>{{ macros.status_pill(order.status) }}  </td>
+                                                        <td>{{ '\u0E3F{:,.4f}'.format(order.btc_amount) }}</td>
+                                                        <td>{{ '\u0E3F{:,.4f}'.format(order.xchange) }}</td>
+                                                </tr>
+                                                {% endfor %}
+                                        </tbody>
+                                        </table>
+
+                                </div>
+                        </div>
+
+                        <div id="Deposits" class="tab-pane fade">
+                                <div class="row">
+                                        <table class="table">
+                                        <thead class="thead-light">
+					<tr>
+                                                <th scope="col">Id</th>
+                                                <th scope="col">Time</th>
+                                                <th scope="col">Amount</th>
+                                                <th scope="col">Status</th>
+                                        </tr>
+                                        </thead>
+
+                                        <tbody>
+                                                {% for payment in payments %}
+                                                <tr>
+                                                        <td>{{ payment.xid }}</td>
+                                                        <td>{{ payment.timestamp }}</td>
+                                                        <td>{{ '${:,.2f}'.format(payment.fiatAmount) }}</td>
+                                                        <td>{{ macros.status_pill(payment.status) }}</td>
+                                                </tr>
+                                                {% endfor %}
+                                        </tbody>
+                                        </table>
+                                </div>
+                        </div>
+
+		</table>
+      </div>
+</div>
+</div>
+{% endblock %}

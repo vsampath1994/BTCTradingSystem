@@ -1,0 +1,62 @@
+<!-- app/templates/trader/pendingDeposits.html -->
+
+{% import "bootstrap/utils.html" as utils %}
+{% extends "base.html" %}
+{% block title %}Pending deposits{% endblock %}
+{% block body %}
+<div class="container">
+<div class="content-section">
+  <div class="outer">
+    <div class="middle">
+      <div class="inner">
+        <br/>
+        {{ utils.flashed_messages() }}
+        <br/>
+        <h1 style="text-align:center;">Pending deposits</h1>
+        {% if pendingDeposits != None %}
+          <hr class="intro-divider">
+          <div class="row" style="height: 360px; overflow: auto">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th width="20%"> Order ID </th>
+                  <th width="20%"> Client ID </th>
+                  <th width="20%"> Amount </th>
+                  <th width="15%"> Approve </th>
+                  <th width="15%"> Cancel </th>
+                </tr>
+              </thead>
+              <tbody>
+              {% for pendingDeposit in pendingDeposits %}
+                <tr>
+                  <td> {{ pendingDeposit.xid }} </td>
+                  <td> {{ pendingDeposit.clientId }} </td>
+                  <td> {{ pendingDeposit.fiatAmount }} </td>
+                  <td>
+                    <a href="{{ url_for('trader.traderAction_deposit', action='Approve', xid=pendingDeposit.xid) }}">
+                      <i class="fa fa-check"></i><span class="label label-success">Approve</span>
+                    </a>
+                  </td>
+                  <td>
+                    <a href="{{ url_for('trader.traderAction_deposit', action='Cancel', xid=pendingDeposit.xid) }}">
+                      <i class="fa fa-close"></i><span class="label label-danger">Cancel</span>
+                    </a>
+                  </td>
+                </tr>
+              {% endfor %}
+              </tbody>
+            </table>
+          </div>
+          <div style="text-align: center">
+        {% else %}
+          <div style="text-align: center">
+            <h3>No pending deposits</h3>
+            <hr class="intro-divider">
+        {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+{% endblock %}

@@ -1,0 +1,54 @@
+<!-- app/templates/trader/closedDeposits.html -->
+
+{% import "bootstrap/utils.html" as utils %}
+
+{% import 'macros.html' as macros %}
+{% extends "base.html" %}
+{% block title %}Closed deposits{% endblock %}
+{% block body %}
+<div class="container">
+<div class="content-section">
+  <div class="outer">
+    <div class="middle">
+      <div class="inner">
+        <br/>
+        {{ utils.flashed_messages() }}
+        <br/>
+        <h1 style="text-align:center;">Closed deposits</h1>
+        {% if closedDeposits != None %}
+          <hr class="intro-divider">
+          <div class="row" style="height: 360px; overflow: auto">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th width="15%"> Order ID </th>
+                  <th width="15%"> Client ID </th>
+				  <th width="15%"> Amount </th>
+                  <th width="20%"> Status </th>
+                </tr>
+              </thead>
+              <tbody>
+              {% for closedDeposit in closedDeposits %}
+                <tr>
+                  <td> {{ closedDeposit.xid }} </td>
+                  <td> {{ closedDeposit.clientId }} </td>
+                  <td> {{ closedDeposit.fiatAmount }} </td>
+                  <td> {{ macros.status_pill(closedDeposit.status) }} </td>
+                </tr>
+              {% endfor %}
+              </tbody>
+            </table>
+          </div>
+          <div style="text-align: center">
+        {% else %}
+          <div style="text-align: center">
+            <h3>No closed deposits</h3>
+            <hr class="intro-divider">
+        {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+{% endblock %}

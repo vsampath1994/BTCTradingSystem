@@ -1,0 +1,93 @@
+<!-- app/templates/trader/dashboard.html -->
+{% extends "base.html" %}
+{% block title %}Trader Dashboard{% endblock %}
+
+{% block body %}
+{% block content %}
+<div class="container">
+	<div class="content-section">
+		<h2>Statistics</h2>
+		<div class="row">
+		<ul class="nav nav-tabs">
+
+			<li class="active"><a data-toggle="tab" href="#Orders">Orders</a></li>
+  			<li><a data-toggle="tab" href="#Deposits">Deposits</a></li>
+		</ul>
+		<div class="tab-content">
+  			<div id="Orders" class="tab-pane fade in active">
+			<div id="chartContainer" style="height: 300px; width: 100%;"></div>
+			<script type="text/javascript">
+				window.onload = function () {
+
+				var pdata = {{ ordersByMonth|tojson }};
+				var depData = {{ depositsByMonth|tojson }};
+
+				var points = [];
+				var depPoints = [];
+
+				for (var i = 0; i < pdata.length; i++) {
+					points[i] = {x: new Date(pdata[i][0], pdata[i][1], 01), y: pdata[i][2]};
+				}
+
+				for (var i = 0; i < depData.length; i++) {
+					depPoints[i] = {x: new Date(depData[i][0], depData[i][1], 01), y: depData[i][2]};
+				}
+
+				var chart = new CanvasJS.Chart("chartContainer", {
+								animationEnabled: true,
+								title:{ text: "Order statistics"},
+								axisX:{ valueFormatString: "MMM YYYY",
+									crosshair: { enabled: true, snapToDataPoint: true}
+								},
+								axisY: { title: "Total number of transactions",
+									includeZero: true,
+									crosshair: { enabled: true, snapToDataPoint: true}
+								},
+								data: [{
+									type: "column",
+									xValueFormatString: "MMM YYYY",
+									dataPoints:points
+									},
+									{
+									type: "line",
+									xValueFormatString: "MMM YYYY",
+									dataPoints:points
+									}]
+								});
+				chart.render();
+				var depchart = new CanvasJS.Chart("depositContainer", {
+																animationEnabled: true,
+																title:{ text: "Deposit statistics"},
+                                                                axisX:{ valueFormatString: "MMM YYYY",
+                                                                        crosshair: { enabled: true, snapToDataPoint: true}
+                                                                },
+                                                                axisY: { title: "Total number of transactions",
+                                                                        includeZero: true,
+                                                                        crosshair: { enabled: true, snapToDataPoint: true}
+                                                                },
+                                                                data: [{
+                                                                        type: "column",
+                                                                        xValueFormatString: "MMM YYYY",
+                                                                        dataPoints:depPoints
+                                                                        },
+                                                                        {
+                                                                        type: "line",
+                                                                        xValueFormatString: "MMM YYYY",
+                                                                        dataPoints:depPoints
+                                                                        }]
+                                                                });
+                                depchart.render();
+				}
+			</script>
+			<script type="text/javascript" src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+			</div>
+  			<div id="Deposits" class="tab-pane fade">                        
+				<div id="depositContainer" style="height: 300px; width: 100%;"></div>
+                        </div>
+		</div>
+		</div>
+  	</div>
+</div>
+
+{% endblock %}
+{% endblock %}

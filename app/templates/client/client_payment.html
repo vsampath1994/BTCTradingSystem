@@ -1,0 +1,21 @@
+<!-- app/templates/auth/register.html -->
+
+{% import "bootstrap/wtf.html" as wtf %}
+{% extends "base.html" %}
+{% block title %}Initiate Payment{% endblock %}
+{% block body %}
+<div class="content-section">
+  <div class="center">
+    <h1>Initiate Payment</h1>
+    <br/>
+    {{ wtf.quick_form(form) }}
+
+  </div>
+    <div class="row center">
+                <div class="col-sm-12">
+                    Current USD Balance: {{  '${:,.2f}'.format(account.fiat_balance)  }}
+                </div>
+            </div>
+    </div>
+</div>
+{% endblock %}

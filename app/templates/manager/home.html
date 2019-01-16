@@ -1,0 +1,116 @@
+<!-- app/templates/home/manager_dashboard.html -->
+
+{% import "bootstrap/wtf.html" as wtf %}
+{% import 'macros.html' as macros %}
+{% extends "base.html" %}
+{% block title %}Manager Dashboard{% endblock %}
+{% block body %}
+{% block content %}
+
+<div class="container">
+	<div class="content-section">
+		<div class="row">
+        		<div class=""col-sm-12">
+          		{% with messages = get_flashed_messages(with_categories=true) %}
+              			{% if messages %}
+                			{% for category, message in messages %}
+                    			{% if category == 'message' %}
+                      				<div class="alert alert-warning" role="alert">
+                    				{% else %}
+                        			<div class="alert alert-{{ category }}" role="alert">
+                    				{% endif %}
+                      				{{ message }}
+                    				</div>
+                			{% endfor %}
+              			{% endif %}
+          		{% endwith %}
+        		</div>
+    		</div>
+		<div class="row">
+			</br>
+			<span style="text-align: center">Client Status update happens every month end at 11:55PM</span>
+			<form action="{{ url_for('manager.update_client_status') }}" method="post" style="display:inline-block; padding-left:10px">
+                                        <button type="submit" class="btn btn-sm btn-success">Update Now</button>
+                                </form>
+				</br>
+		</div>
+				</br>
+		<div class="row">
+			<span>Statistics of Transactions</span>
+			<form action="{{ url_for('manager.search') }}" method="get" style="display:inline-block; padding-left:10px"> 
+                                        <input type="date" name="Start Date">
+                                        <input type="date" name="End Date">
+                                        <button type="submit" class="btn btn-sm btn-success">Search</button>
+                                </form>
+                </div>
+
+		<h2 style="text-align: center">Most Recent Transactions</h2>
+		<div class="row">
+		<ul class="nav nav-tabs">
+			<li class="active"><a data-toggle="tab" href="#Orders">Orders</a></li>
+  			<li><a data-toggle="tab" href="#Deposits">Deposits</a></li>
+		</ul>
+
+		<div class="tab-content">
+  			<div id="Orders" class="tab-pane fade in active">
+				<div class="row">
+					<table class="table">
+		                        <thead class="thead-light">
+                	                <tr>
+                                		<th scope="col">Id</th>
+                                		<th scope="col">Time</th>
+                                		<th scope="col">Order/Status</th>
+                                		<th scope="col">BTC Amount</th>
+						<th scope="col">Exchange Rate</th>
+                            		</tr>
+                        		</thead>
+
+                        		<tbody>
+                        			{% for order in orders %}
+                            			<tr>
+                                			<td>{{ order.xid }}</td>
+                                			<td>{{ order.timestamp }}</td>
+                                			<td>{{ "Buy" if order.isBuy else "Sell" }} <br/>{{ macros.status_pill(order.status) }}  </td>
+                                			<td>{{ '\u0E3F{:,.4f}'.format(order.btc_amount) }}</td>
+							<td>{{ '\u0E3F{:,.4f}'.format(order.xchange) }}</td>
+                            			</tr>
+                        			{% endfor %}
+                        		</tbody>
+                    			</table>
+
+				</div>
+  			</div>
+			
+  			<div id="Deposits" class="tab-pane fade">
+                                <div class="row">
+                                        <table class="table">
+                                        <thead class="thead-light">
+                                        <tr>
+                                                <th scope="col">Id</th>
+                                                <th scope="col">Time</th>
+                                                <th scope="col">Amount</th>
+                                                <th scope="col">Status</th>
+                                        </tr>   
+                                        </thead>
+                                        
+                                        <tbody>
+                                                {% for payment in payments %}
+                                                <tr>
+                                                        <td>{{ payment.xid }}</td>
+                                                        <td>{{ payment.timestamp }}</td>
+							<td>{{ '${:,.2f}'.format(payment.fiatAmount) }}</td>
+							<td>{{ macros.status_pill(payment.status) }}</td>
+                                                </tr> 
+                                                {% endfor %}
+                                        </tbody>
+                                        </table>
+                                </div>  
+  			</div>
+		</div>
+		</div>
+
+  	</div>
+</div>
+
+{% endblock %}
+{% endblock %}

@@ -1,0 +1,14 @@
+<!-- app/templates/client/client_buy.html -->
+  
+{% import "bootstrap/wtf.html" as wtf %}
+{% extends "base.html" %}
+{% block title %}Buy Bitcoins{% endblock %}
+{% block body %}
+<div class="content-section">
+  <div class="center">
+    <h1>Buy bitcoins from trader</h1>
+    <br/>
+    {{ wtf.quick_form(form) }}
+  </div>
+</div>
+{% endblock %}

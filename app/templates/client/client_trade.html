@@ -1,0 +1,58 @@
+{% import "bootstrap/wtf.html" as wtf %}
+{% extends "base.html" %}
+{% block title %}Initiate Trade{% endblock %}
+{% block body %}
+<div class="content-section">
+  <div class="center">
+    <h1>Initiate Trade</h1>
+    <br/>
+    Current USD/BTC Exchange Rate:  {{ '${:,.2f}'.format(form.exchange_rate) }}<br />
+    <form method="POST" action="/client/trade">
+      <table class="table table-condensed">
+        <tr>
+            {% for subfield in form.is_buy %}
+                <td>{{ subfield }} {{ subfield.label }}</td>
+            {% endfor %}
+        </tr>
+        <tr>
+            <td>Trade Amount: &nbsp;</td>
+            <td>&#3647;{{ form.btc_amount }}
+                {% if form.btc_amount.errors %}
+                <ul class="errors">{% for error in form.btc_amount.errors %}<li>{{ error }}</li>{% endfor %}</ul>
+                {% endif %}
+            </td>
+
+        </tr>
+        <tr>
+            <table class="table table-bordered">
+                <tr><td colspan="2"> Commission Payment Method</td></tr>
+                <tr>
+                    {% for subfield in form.commish_type %}
+                        <td>{{ subfield }} {{ subfield.label }}</td>
+                    {% endfor %}
+                </tr>
+                <tr>
+                    <td> {{ '${:,.2f}'.format(account.commish) }} </td> <td> {{ "\u0E3F{:,.4f}".format(account.commish / form.exchange_rate) }} </td>
+                </tr>
+            </table>
+        </tr>
+    <tr>
+        <td colspan="2" align="center">{{ form.submit(class="btn btn-primary") }}</td>
+    </tr>
+    </table>
+    {{ form.csrf_token }}
+    {{ form.xchange }}
+    {{ form.fiat_bal(value = account.fiat_balance)}}
+    {{ form.btc_bal(value= account.btc_balance)}}
+    {{ form.commish_amount(value= account.commish)}}
+    </form>
+  </div>
+    <div class="row center">
+                <div class="col-sm-12">
+                    Available USD Balance: {{  '${:,.2f}'.format(account.fiat_balance)  }}<br />
+                    Available BTC Balance: {{  "\u0E3F{:,.4f}".format(account.btc_balance)  }}<br />
+                </div>
+            </div>
+    </div>
+</div>
+{% endblock %}

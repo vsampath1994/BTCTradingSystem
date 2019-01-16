@@ -1,0 +1,11 @@
+configparser
+flask
+flask-sqlalchemy
+mysql-python
+flask-login
+flask-bootstrap
+flask-migrate
+WTForms
+Flask-WTF
+waitress
+apscheduler

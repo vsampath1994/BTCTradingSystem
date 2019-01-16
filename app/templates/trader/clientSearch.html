@@ -1,0 +1,70 @@
+<!-- app/templates/trader/clientSearch.html -->
+
+{% import "bootstrap/utils.html" as utils %}
+{% import 'macros.html' as macros %}
+{% extends "base.html" %}
+{% block title %}Find clients{% endblock %}
+{% block body %}
+<div class="content-section">        <br/>
+        {{ utils.flashed_messages() }}
+        <br/>
+        <h1 style="text-align:center;">Find clients</h1>
+	<form action="{{ url_for('trader.client_search', is_search=1) }}" method="get" style="text-align:center;">
+	<label for="Field">Field</label>
+	<select style="width:200px" name="Field" id="Field">
+	    <option value="username">Username</option>
+	    <option value="first_name">First name</option>
+	    <option value="last_name">Last name</option>
+	    <option value="phone_number">Phone number</option>
+	    <option value="city">City</option>
+	    <option value="state">State</option>
+	    <option value="zip_code">Zipcode</option>
+  	</select>
+	<label for="Condition">Search key</label>
+	<input type="text" name="Condition" id="Condition">
+	<button type="submit" class="btn btn-sm btn-success">Search</button>
+	</form>
+        {% if is_search %}
+		<hr class="intro-divider">
+		<ul class="nav nav-tabs">
+
+			<li class="active"><a data-toggle="tab" href="#Results">Results</a></li>
+		</ul>
+		<div class="tab-content">
+  			<div id="Results" class="tab-pane fade in active">
+				{% if clients != None and clients.count() > 0 %}
+					<div class="container" style="height: 360px; overflow: auto">
+						<table class="table">
+						  <thead>
+							<tr>
+							  <th width="10%"> Client ID </th>
+							  <th width="10%"> First Name </th>
+							  <th width="10%"> Last Name </th>
+							  <th width="10%"> Client</th>
+							</tr>
+						  </thead>
+						  <tbody>
+							{% for client in clients %}
+							<tr>
+							  <td> {{ client.id }} </td>
+							  <td> {{ client.first_name }} </td>
+							  <td> {{ client.last_name }} </td>
+							  <td>
+								<a href="{{ url_for('trader.client_info', id=client.id) }}">
+									<i class=" fa fa-user"></i> See history 
+								</a>
+							  </td>
+							</tr>
+							{% endfor %}
+						  </tbody>
+						</table>
+					</div>
+				{% else %}
+					<h3 style="text-align:center;">No client found</h3>
+				{% endif %}
+			</div>
+		</div>
+		{% endif %}
+        </div>
+</div>
+{% endblock %}

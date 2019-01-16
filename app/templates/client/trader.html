@@ -1,0 +1,38 @@
+<!-- app/templates/manager/traders/trader.html -->
+
+{% import "bootstrap/wtf.html" as wtf %}
+{% extends "base.html" %}
+{% block title %}
+    {% if buy_trader %}
+        Buy Trader
+    {% else %}
+    	{% if sell_trader %}
+        	Sell Trader
+	{% else %}
+		Pay Trader
+	{% endif %}
+    {% endif %}
+{% endblock %}
+{% block body %}
+<div class="content-section">
+ <div class="outer">
+    <div class="middle">
+      <div class="inner">
+        <div class="center">
+            {% if buy_trader %}
+                <h1>Buy Trader</h1>
+            {% else %}
+	    	{% if sell_trader %}
+                	<h1>Sell Trader</h1>
+		{% else %}
+			<h1>Pay Trader</h1>
+		{% endif %}
+            {% endif %}
+            <br/>
+            {{ wtf.quick_form(form) }}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

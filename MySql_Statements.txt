@@ -1,0 +1,65 @@
+create user 'sql_admin'@'localhost' identified by 'progamut';
+create database bitcoinmanagement_test;
+use bitcoinmanagement_test;
+create table users(
+	id int(11) UNIQUE,
+	username varchar(255) UNIQUE,
+	password_hash varchar(255),
+	btc_balance float,
+	cell_number varchar(255),
+	city varchar(255),
+	email varchar(255) UNIQUE,
+	fiat_balance float,
+	first_name varchar(255),
+	last_name varchar(255),
+	gold_status tinyint(1),
+	phone_number varchar(255),
+	street varchar(255),
+	state varchar(255),
+	user_type tinyint(1) NOT NULL,
+	zip_code varchar(255),
+	PRIMARY KEY(id)
+);
+
+create table payments(
+	xid int(11) UNIQUE NOT NULL,
+	status varchar(255) NOT NULL,
+	fiatAmount varchar(255) NOT NULL,
+	clientId int(11) NOT NULL,
+	traderId int(11) NOT NULL,
+	timestamp datetime NOT NULL,
+	PRIMARY KEY (xid)
+);
+
+create table orders(
+	xid int(11) UNIQUE NOT NULL,
+	status varchar(255) NOT NULL,
+	isBuy tinyint(1) NOT NULL,
+	btc_amount float NOT NULL,
+	xchange float,
+	comm_type varchar(255) NOT NULL,
+	comm_amount float NOT NULL,
+	clientId int(11),
+	traderId int(11),
+	timestamp datetime NOT NULL,
+	PRIMARY KEY(xid)
+);
+
+create table changelog(
+	lid int(11) UNIQUE NOT NULL,
+	timestamp datetime NOT NULL,
+	xid int(11) NOT NULL,
+	clientId int(11),
+	traderId int(11),
+	status varchar(255) NOT NULL,
+	xid_type varchar(255) NOT NULL,
+	PRIMARY KEY(lid)
+);
+
+declar @id int
+select @id 3
+while @id >= 1 and @id <= 1000
+begin
+	insert into payments values(@id, 'pending', 1000, 1, 2, convert(datetime, '18-06-12 10:34:09PM', 5)
+	select @id = @id + 1
+end
